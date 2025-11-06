@@ -144,13 +144,151 @@
         
         var groceryCategories = [
             {
-                name: "Vegetables (non-starchy & crucifers)",
-                items: ["Bell peppers", "Broccoli", "Brussels sprouts", "Cabbage (fresh or pre-shredded)", "Carrots", "Cauliflower (steam-in-bag)", "Celery", "Coleslaw mix (for easy fiber)", "Collards", "Cucumbers", "Frozen chopped collards", "Frozen pepper & onion blend", "Garlic", "Green beans (steam-in-bag)", "Kale", "Mixed salad or coleslaw mix", "Mushrooms", "Okra (fresh or frozen)", "Onions", "Pre-washed salad mixes", "Spinach", "Summer squash", "Sweet potatoes (portion-aware)", "Tomato paste (no added sugar)", "Tomatoes"]
+                name: "Vegetables (non-starchy and crucifers)",
+                items: ["Bell peppers", "Broccoli", "Brussels sprouts", "Cabbage (fresh or pre-shredded)", "Carrots", "Cauliflower (steam-in-bag)", "Celery", "Coleslaw mix (for easy fiber)", "Collards", "Cucumbers", "Frozen chopped collards", "Frozen pepper and onion blend", "Garlic", "Green beans (steam-in-bag)", "Kale", "Mixed salad or coleslaw mix", "Mushrooms", "Okra (fresh or frozen)", "Onions", "Pre-washed salad mixes", "Spinach", "Summer squash", "Sweet potatoes (portion-aware)", "Tomato paste (no added sugar)", "Tomatoes"]
             },
             {
-                name: "Fruits (low GI & constipation-friendly)",
-                items: ["Apples", "Berries (blueberries, strawberries, raspberries)", "Grapefruit (only if not interacting with meds)", "Kiwi fruit (plan on 2 per day during constipation flares)", "Lemons (for fish & dressings)", "Oranges / Clementines", "Peaches (no-sugar-added or in juice)", "Pears (with skin)", "Prunes / 100% prune juice"]
+                name: "Fruits (low GI and constipation-friendly)",
+                items: ["Apples", "Berries (blueberries, strawberries, raspberries)", "Grapefruit (only if not interacting with meds)", "Kiwi fruit (plan on 2 per day during constipation flares)", "Lemons (for fish and dressings)", "Oranges or Clementines", "Peaches (no-sugar-added or in juice)", "Pears (with skin)", "Prunes or 100 percent prune juice"]
             },
             {
-                name: "Whole Grains & High-Fiber Starches",
-                items: ["100% whole-wheat or sprouted bread
+                name: "Whole Grains and High-Fiber Starches",
+                items: ["100 percent whole-wheat or sprouted bread (3g plus fiber per slice)", "Barley or Quinoa or Brown or Wild rice", "Bran cereal or Wheat bran", "Ground flaxseed or Chia seed", "New potatoes (small)", "Old-fashioned oats or steel-cut oats", "Stone-ground grits (small portions)", "Whole-grain tortillas (check fiber)"]
+            },
+            {
+                name: "Legumes",
+                items: ["Beans (black, pinto, kidney, chickpeas; canned low-sodium)", "Black-eyed peas (canned, rinsed)", "Lentils (brown/green/red)", "Red beans (for slow cooker)", "Split peas"]
+            },
+            {
+                name: "Fish and Seafood (omega-3)",
+                items: ["Canned salmon (for patties)", "Catfish fillets (baked or air-fried)", "Light tuna (limit albacore)", "Salmon (fresh or frozen or canned, low-sodium)", "Sardines or Mackerel or Herring"]
+            },
+            {
+                name: "Poultry, Eggs and Other Proteins",
+                items: ["Chicken thighs or breast (skinless)", "Edamame", "Eggs or Egg whites", "Lean ground turkey (for meatloaf or chili)", "Pulled chicken (slow-cooker; unsweet BBQ spice)", "Rotisserie-style chicken (skin removed)", "Skinless chicken or turkey", "Tempeh", "Tofu", "Turkey sausage (lean)", "Very lean beef or lean chuck (pot roast; small amounts)"]
+            },
+            {
+                name: "Dairy and Calcium-Rich Alternatives",
+                items: ["Calcium-set tofu", "Cottage cheese", "Light cheddar", "Low-fat cottage cheese", "Low-fat milk", "Fortified soy milk", "Low-fat plain yogurt (live cultures; choose unsweetened)"]
+            },
+            {
+                name: "Nuts, Seeds and Nut Butters",
+                items: ["Walnuts", "Almonds", "Pistachios", "Pecans", "Chia", "Ground flaxseed", "Natural peanut or almond butter"]
+            },
+            {
+                name: "Oils, Dressings and Spreads",
+                items: ["Extra-virgin olive oil (or spray)", "No-sugar BBQ spice (dry rub)", "Avocado oil (high heat)", "Hot sauce (check sodium)", "Olive-oil vinaigrette (or make with lemon)", "Apple cider vinegar", "Hummus or Tahini"]
+            },
+            {
+                name: "Breads and Convenience",
+                items: ["Whole-grain waffles (low-sugar, frozen)", "Whole-grain bread or tortillas (3g plus fiber per slice)", "Whole-grain crackers"]
+            },
+            {
+                name: "Soups, Canned and Frozen Staples",
+                items: ["Canned diced tomatoes (no salt added)", "Frozen berries", "Frozen mixed vegetables", "Frozen pepper and onion blend", "Frozen spinach or collards or okra", "Low-sodium broth (chicken or veg)", "Tomato soup (low-sodium)"]
+            },
+            {
+                name: "Herbs, Spices and Extras",
+                items: ["Garlic and Onion powder (salt-free)", "Garlic powder or onion powder (salt-free)", "Low-sodium broth; no-salt spice blends", "No-salt seasoning blends", "Paprika or Bay leaf or Italian herbs", "Pepper or Cinnamon or Ginger or Turmeric", "Psyllium husk (optional add-on fiber if diet alone isn't enough)", "Turmeric or ginger, cinnamon"]
+            },
+            {
+                name: "Beverages",
+                items: ["Coffee", "Fortified soy milk", "Low-fat milk", "Prune juice", "Unsweetened tea", "Water"]
+            }
+        ];
+        
+        function loadCheckedItems() {
+            var saved = localStorage.getItem('groceryChecked');
+            if (saved) {
+                try {
+                    checkedItems = JSON.parse(saved);
+                } catch (e) {
+                    checkedItems = {};
+                }
+            }
+        }
+        
+        function saveCheckedItems() {
+            localStorage.setItem('groceryChecked', JSON.stringify(checkedItems));
+        }
+        
+        function toggleItem(item) {
+            checkedItems[item] = !checkedItems[item];
+            saveCheckedItems();
+            renderList();
+        }
+        
+        function increaseFontSize() {
+            fontSize = Math.min(fontSize + 2, 20);
+            document.getElementById('fontSizeDisplay').textContent = fontSize + 'pt';
+            renderList();
+        }
+        
+        function decreaseFontSize() {
+            fontSize = Math.max(fontSize - 2, 12);
+            document.getElementById('fontSizeDisplay').textContent = fontSize + 'pt';
+            renderList();
+        }
+        
+        function clearAll() {
+            checkedItems = {};
+            saveCheckedItems();
+            renderList();
+        }
+        
+        function renderList() {
+            var content = document.getElementById('content');
+            content.innerHTML = '';
+            
+            for (var i = 0; i < groceryCategories.length; i++) {
+                var category = groceryCategories[i];
+                var categoryDiv = document.createElement('div');
+                categoryDiv.className = 'category';
+                
+                var categoryTitle = document.createElement('h2');
+                categoryTitle.className = 'category-title';
+                categoryTitle.style.fontSize = Math.min(fontSize + 2, 22) + 'px';
+                categoryTitle.textContent = category.name;
+                categoryDiv.appendChild(categoryTitle);
+                
+                for (var j = 0; j < category.items.length; j++) {
+                    var item = category.items[j];
+                    var itemDiv = document.createElement('div');
+                    itemDiv.className = 'item';
+                    itemDiv.setAttribute('data-item', item);
+                    itemDiv.onclick = function() {
+                        toggleItem(this.getAttribute('data-item'));
+                    };
+                    
+                    var checkbox = document.createElement('div');
+                    checkbox.className = 'checkbox';
+                    if (checkedItems[item]) {
+                        checkbox.className = 'checkbox checked';
+                        var checkmark = document.createElement('span');
+                        checkmark.className = 'checkmark';
+                        checkmark.textContent = '✓';
+                        checkbox.appendChild(checkmark);
+                    }
+                    
+                    var itemText = document.createElement('span');
+                    itemText.className = 'item-text';
+                    itemText.style.fontSize = fontSize + 'px';
+                    itemText.textContent = item;
+                    if (checkedItems[item]) {
+                        itemText.className = 'item-text checked';
+                    }
+                    
+                    itemDiv.appendChild(checkbox);
+                    itemDiv.appendChild(itemText);
+                    categoryDiv.appendChild(itemDiv);
+                }
+                
+                content.appendChild(categoryDiv);
+            }
+        }
+        
+        loadCheckedItems();
+        renderList();
+    </script>
+</body>
+</html>
