@@ -119,9 +119,8 @@
             color: black;
         }
         
-        .item-text.checked {
-            text-decoration: line-through;
-            opacity: 0.5;
+        .item-text {
+            color: black;
         }
     </style>
 </head>
@@ -274,9 +273,6 @@
                     itemText.className = 'item-text';
                     itemText.style.fontSize = fontSize + 'px';
                     itemText.textContent = item;
-                    if (checkedItems[item]) {
-                        itemText.className = 'item-text checked';
-                    }
                     
                     itemDiv.appendChild(checkbox);
                     itemDiv.appendChild(itemText);
