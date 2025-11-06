@@ -1,235 +1,156 @@
-import React, { useState, useEffect } from 'react';
-import { Check } from 'lucide-react';
-
-const GroceryApp = () => {
-  const [fontSize, setFontSize] = useState(16);
-  const [checkedItems, setCheckedItems] = useState({});
-
-  const groceryCategories = [
-    {
-      name: "Vegetables (non-starchy & crucifers)",
-      items: ["Bell peppers", "Broccoli", "Brussels sprouts", "Cabbage (fresh or pre-shredded)", "Carrots", "Cauliflower (steam-in-bag)", "Celery", "Coleslaw mix (for easy fiber)", "Collards", "Cucumbers", "Frozen chopped collards", "Frozen pepper & onion blend", "Garlic", "Green beans (steam-in-bag)", "Kale", "Mixed salad or coleslaw mix", "Mushrooms", "Okra (fresh or frozen)", "Onions", "Pre-washed salad mixes", "Spinach", "Summer squash", "Sweet potatoes (portion-aware)", "Tomato paste (no added sugar)", "Tomatoes"]
-    },
-    {
-      name: "Fruits (low GI & constipation-friendly)",
-      items: ["Apples", "Berries (blueberries, strawberries, raspberries)", "Grapefruit (only if not interacting with meds)", "Kiwi fruit (plan on 2 per day during constipation flares)", "Lemons (for fish & dressings)", "Oranges / Clementines", "Peaches (no-sugar-added or in juice)", "Pears (with skin)", "Prunes / 100% prune juice"]
-    },
-    {
-      name: "Whole Grains & High-Fiber Starches",
-      items: ["100% whole-wheat or sprouted bread (>= 3g fiber / slice)", "Barley / Quinoa / Brown or Wild rice", "Bran cereal / Wheat bran", "Ground flaxseed / Chia seed", "New potatoes (small)", "Old-fashioned oats or steel-cut oats", "Stone-ground grits (small portions)", "Whole-grain tortillas (check fiber)"]
-    },
-    {
-      name: "Legumes",
-      items: ["Beans (black, pinto, kidney, chickpeas; canned low-sodium)", "Black-eyed peas (canned, rinsed)", "Lentils (brown/green/red)", "Red beans (for slow cooker)", "Split peas"]
-    },
-    {
-      name: "Fish & Seafood (omega-3)",
-      items: ["Canned salmon (for patties)", "Catfish fillets (baked/air-fried)", "Light tuna (limit albacore)", "Salmon (fresh/frozen/canned, low-sodium)", "Sardines / Mackerel / Herring"]
-    },
-    {
-      name: "Poultry, Eggs & Other Proteins",
-      items: ["Chicken thighs or breast (skinless)", "Edamame", "Eggs / Egg whites", "Lean ground turkey (for meatloaf/chili)", "Pulled chicken (slow-cooker; unsweet BBQ spice)", "Rotisserie-style chicken (skin removed)", "Skinless chicken or turkey", "Tempeh", "Tofu", "Turkey sausage (lean)", "Very lean beef or lean chuck (pot roast; small amounts)"]
-    },
-    {
-      name: "Dairy & Calcium-Rich Alternatives",
-      items: ["Calcium-set tofu", "Cottage cheese", "Light cheddar", "Low-fat cottage cheese", "Low-fat milk", "Fortified soy milk", "Low-fat plain yogurt (live cultures; choose unsweetened)"]
-    },
-    {
-      name: "Nuts, Seeds & Nut Butters",
-      items: ["Walnuts", "Almonds", "Pistachios", "Pecans", "Chia", "Ground flaxseed", "Natural peanut or almond butter"]
-    },
-    {
-      name: "Oils, Dressings & Spreads",
-      items: ["Extra-virgin olive oil (or spray)", "No-sugar BBQ spice (dry rub)", "Avocado oil (high heat)", "Hot sauce (check sodium)", "Olive-oil vinaigrette (or make with lemon)", "Apple cider vinegar", "Hummus / Tahini"]
-    },
-    {
-      name: "Breads & Convenience",
-      items: ["Whole-grain waffles (low-sugar, frozen)", "Whole-grain bread / tortillas (>= 3 g fiber/slice)", "Whole-grain crackers"]
-    },
-    {
-      name: "Soups, Canned & Frozen Staples",
-      items: ["Canned diced tomatoes (no salt added)", "Frozen berries", "Frozen mixed vegetables", "Frozen pepper & onion blend", "Frozen spinach / collards / okra", "Low-sodium broth (chicken/veg)", "Tomato soup (low-sodium)"]
-    },
-    {
-      name: "Herbs, Spices & Extras",
-      items: ["Garlic & Onion powder (salt-free)", "Garlic powder/onion powder (salt-free)", "Low-sodium broth; no-salt spice blends", "No-salt seasoning blends", "Paprika / Bay leaf / Italian herbs", "Pepper / Cinnamon / Ginger / Turmeric", "Psyllium husk (optional add-on fiber if diet alone isn't enough)", "Turmeric/ginger, cinnamon"]
-    },
-    {
-      name: "Beverages",
-      items: ["Coffee", "Fortified soy milk", "Low-fat milk", "Prune juice", "Unsweetened tea", "Water"]
-    }
-  ];
-
-  useEffect(() => {
-    const saved = localStorage.getItem('groceryChecked');
-    if (saved) {
-      setCheckedItems(JSON.parse(saved));
-    }
-  }, []);
-
-  useEffect(() => {
-    localStorage.setItem('groceryChecked', JSON.stringify(checkedItems));
-  }, [checkedItems]);
-
-  const toggleItem = (item) => {
-    setCheckedItems(prev => ({
-      ...prev,
-      [item]: !prev[item]
-    }));
-  };
-
-  const increaseFontSize = () => {
-    setFontSize(prev => Math.min(prev + 2, 20));
-  };
-
-  const decreaseFontSize = () => {
-    setFontSize(prev => Math.max(prev - 2, 12));
-  };
-
-  const clearAll = () => {
-    setCheckedItems({});
-  };
-
-  return (
-    <div style={{ 
-      backgroundColor: 'white', 
-      minHeight: '100vh',
-      fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif'
-    }}>
-      <div style={{
-        position: 'sticky',
-        top: 0,
-        backgroundColor: 'white',
-        borderBottom: '2px solid black',
-        padding: '16px',
-        zIndex: 10
-      }}>
-        <h1 style={{ 
-          margin: '0 0 16px 0', 
-          fontSize: '24px',
-          fontWeight: 'bold'
-        }}>
-          Grocery Checklist
-        </h1>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Grocery Checklist</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
         
-        <div style={{ 
-          display: 'flex', 
-          gap: '12px', 
-          alignItems: 'center',
-          flexWrap: 'wrap'
-        }}>
-          <button
-            onClick={decreaseFontSize}
-            style={{
-              padding: '12px 20px',
-              fontSize: '18px',
-              backgroundColor: 'white',
-              border: '2px solid black',
-              borderRadius: '8px',
-              cursor: 'pointer',
-              fontWeight: 'bold',
-              minWidth: '50px'
-            }}
-          >
-            A-
-          </button>
-          
-          <button
-            onClick={increaseFontSize}
-            style={{
-              padding: '12px 20px',
-              fontSize: '18px',
-              backgroundColor: 'white',
-              border: '2px solid black',
-              borderRadius: '8px',
-              cursor: 'pointer',
-              fontWeight: 'bold',
-              minWidth: '50px'
-            }}
-          >
-            A+
-          </button>
-
-          <span style={{ fontSize: '14px', color: '#666' }}>
-            {fontSize}pt
-          </span>
-
-          <button
-            onClick={clearAll}
-            style={{
-              padding: '12px 20px',
-              fontSize: '16px',
-              backgroundColor: 'white',
-              border: '2px solid black',
-              borderRadius: '8px',
-              cursor: 'pointer',
-              marginLeft: 'auto'
-            }}
-          >
-            Clear All
-          </button>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+            background-color: white;
+            color: black;
+        }
+        
+        .header {
+            position: sticky;
+            top: 0;
+            background-color: white;
+            border-bottom: 2px solid black;
+            padding: 16px;
+            z-index: 10;
+        }
+        
+        h1 {
+            margin: 0 0 16px 0;
+            font-size: 24px;
+            font-weight: bold;
+        }
+        
+        .controls {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        
+        button {
+            padding: 12px 20px;
+            font-size: 18px;
+            background-color: white;
+            border: 2px solid black;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            min-width: 50px;
+        }
+        
+        button:active {
+            background-color: #f0f0f0;
+        }
+        
+        .clear-btn {
+            margin-left: auto;
+            font-size: 16px;
+        }
+        
+        .font-size-display {
+            font-size: 14px;
+            color: #666;
+        }
+        
+        .content {
+            padding: 16px;
+        }
+        
+        .category {
+            margin-bottom: 32px;
+        }
+        
+        .category-title {
+            font-weight: bold;
+            margin-bottom: 12px;
+            color: black;
+        }
+        
+        .item {
+            display: flex;
+            align-items: center;
+            padding: 14px 12px;
+            border-bottom: 1px solid #ddd;
+            cursor: pointer;
+            gap: 12px;
+            background-color: white;
+        }
+        
+        .item:active {
+            background-color: #f9f9f9;
+        }
+        
+        .checkbox {
+            width: 32px;
+            height: 32px;
+            min-width: 32px;
+            border: 2px solid black;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: white;
+        }
+        
+        .checkbox.checked {
+            background-color: black;
+        }
+        
+        .checkmark {
+            color: white;
+            font-size: 24px;
+            font-weight: bold;
+            line-height: 1;
+        }
+        
+        .item-text {
+            color: black;
+        }
+        
+        .item-text.checked {
+            text-decoration: line-through;
+            opacity: 0.5;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>Grocery Checklist</h1>
+        <div class="controls">
+            <button onclick="decreaseFontSize()">A-</button>
+            <button onclick="increaseFontSize()">A+</button>
+            <span class="font-size-display" id="fontSizeDisplay">16pt</span>
+            <button class="clear-btn" onclick="clearAll()">Clear All</button>
         </div>
-      </div>
-
-      <div style={{ padding: '16px' }}>
-        {groceryCategories.map((category, idx) => (
-          <div key={idx} style={{ marginBottom: '32px' }}>
-            <h2 style={{ 
-              fontSize: Math.min(fontSize + 2, 22) + 'px',
-              fontWeight: 'bold',
-              marginBottom: '12px',
-              color: 'black'
-            }}>
-              {category.name}
-            </h2>
-            
-            {category.items.map((item, itemIdx) => (
-              <div
-                key={itemIdx}
-                onClick={() => toggleItem(item)}
-                style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  padding: '14px 12px',
-                  borderBottom: '1px solid #ddd',
-                  cursor: 'pointer',
-                  gap: '12px',
-                  backgroundColor: 'white'
-                }}
-              >
-                <div
-                  style={{
-                    width: '32px',
-                    height: '32px',
-                    minWidth: '32px',
-                    border: '2px solid black',
-                    borderRadius: '6px',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    backgroundColor: checkedItems[item] ? 'black' : 'white'
-                  }}
-                >
-                  {checkedItems[item] && (
-                    <Check size={24} color="white" strokeWidth={3} />
-                  )}
-                </div>
-                
-                <span style={{
-                  fontSize: fontSize + 'px',
-                  color: 'black',
-                  textDecoration: checkedItems[item] ? 'line-through' : 'none',
-                  opacity: checkedItems[item] ? 0.5 : 1
-                }}>
-                  {item}
-                </span>
-              </div>
-            ))}
-          </div>
-        ))}
-      </div>
     </div>
-  );
-};
+    
+    <div class="content" id="content"></div>
 
-export default GroceryApp;
+    <script>
+        var fontSize = 16;
+        var checkedItems = {};
+        
+        var groceryCategories = [
+            {
+                name: "Vegetables (non-starchy & crucifers)",
+                items: ["Bell peppers", "Broccoli", "Brussels sprouts", "Cabbage (fresh or pre-shredded)", "Carrots", "Cauliflower (steam-in-bag)", "Celery", "Coleslaw mix (for easy fiber)", "Collards", "Cucumbers", "Frozen chopped collards", "Frozen pepper & onion blend", "Garlic", "Green beans (steam-in-bag)", "Kale", "Mixed salad or coleslaw mix", "Mushrooms", "Okra (fresh or frozen)", "Onions", "Pre-washed salad mixes", "Spinach", "Summer squash", "Sweet potatoes (portion-aware)", "Tomato paste (no added sugar)", "Tomatoes"]
+            },
+            {
+                name: "Fruits (low GI & constipation-friendly)",
+                items: ["Apples", "Berries (blueberries, strawberries, raspberries)", "Grapefruit (only if not interacting with meds)", "Kiwi fruit (plan on 2 per day during constipation flares)", "Lemons (for fish & dressings)", "Oranges / Clementines", "Peaches (no-sugar-added or in juice)", "Pears (with skin)", "Prunes / 100% prune juice"]
+            },
+            {
+                name: "Whole Grains & High-Fiber Starches",
+                items: ["100% whole-wheat or sprouted bread
